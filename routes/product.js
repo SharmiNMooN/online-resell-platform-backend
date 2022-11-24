@@ -9,6 +9,6 @@ router.post(
   authorisedRoles("seller"),
   productController.createProduct
 );
-router.get("/", verifyJWT, productController.getProducts);
+router.get("/:categoryId", verifyJWT, productController.getProducts);
 
 module.exports = router;
