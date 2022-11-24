@@ -9,6 +9,7 @@ router.post(
   authorisedRoles("seller"),
   productController.createProduct
 );
+router.get("/adverties", productController.getAdvertiesProduct);
 router.get("/:categoryId", verifyJWT, productController.getProducts);
 router.patch("/:productId", verifyJWT, productController.updateProduct);
 

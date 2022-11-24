@@ -89,4 +89,22 @@ module.exports = {
       });
     }
   },
+  getAdvertiesProduct: async (req, res) => {
+    try {
+      const products = await productModel.find({
+        isAdvertised: true,
+        status: "available",
+      });
+      return res.send({
+        success: true,
+        message: "Adverties prodcut list...",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };
