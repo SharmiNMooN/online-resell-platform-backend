@@ -5,7 +5,9 @@ module.exports = {
       if (roles.includes(req.decoded.role)) {
         next();
       } else {
-        return res.status(401).send({ message: "unauthorized access" });
+        return res
+          .status(401)
+          .send({ message: "You are not allowed to perfome this action" });
       }
     };
   },
