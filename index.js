@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB } = require("./config/db.js");
+const userRoutes = require("./routes/user");
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,8 @@ app.get("/", (req, res) => {
     message: "Laptop Resell service API",
   });
 });
+
+app.use("/users", userRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
