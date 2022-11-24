@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/user");
+const orderModel = require("../models/order");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 module.exports = {
   registerUser: async (req, res) => {
@@ -92,6 +94,88 @@ module.exports = {
         success: true,
         message: "User logged in succesfully",
         data: { user, token },
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  getBuyers: async (req, res) => {
+    try {
+      const users = await userModel.find({
+        role: "buyer",
+      });
+
+      return res.status(200).send({
+        success: true,
+        message: "Buyer user list",
+        data: users,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+  getMyBuyers: async (req, res) => {
+    try {
+      const sellerId = req.decoded.id;
+      console.log({ sellerId });
+      const users = await orderModel.aggregate([
+        {
+          $match: { sellerId: ObjectId(sellerId) },
+        },
+
+        {
+          $lookup: {
+            from: "users",
+            localField: "customerId",
+            foreignField: "_id",
+            as: "users",
+          },
+        },
+        { $unwind: "$users" },
+        {
+          $project: {
+            orderId: "$_id",
+            userName: "$users.name",
+            userEmail: "$users.email",
+            userImage: "$users.image",
+            mobileNumber: 1,
+            image: 1,
+            meetLocation: 1,
+            name: 1,
+          },
+        },
+      ]);
+
+      return res.status(200).send({
+        success: true,
+        message: "Buyer user list",
+        data: users,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  getSeller: async (req, res) => {
+    try {
+      const users = await userModel.find({
+        role: "seller",
+      });
+
+      return res.status(200).send({
+        success: true,
+        message: "Seller user list",
+        data: users,
       });
     } catch (error) {
       return res.status(500).send({
