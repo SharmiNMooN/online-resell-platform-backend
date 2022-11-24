@@ -10,5 +10,6 @@ router.post(
   productController.createProduct
 );
 router.get("/:categoryId", verifyJWT, productController.getProducts);
+router.patch("/:productId", verifyJWT, productController.updateProduct);
 
 module.exports = router;

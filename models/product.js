@@ -25,6 +25,7 @@ const productSchema = new Schema(
       enum: ["available", "sold"],
       default: "available",
     },
+    isAdvertised: { type: Schema.Types.Boolean, default: false },
   },
   {
     timestamps: true,
