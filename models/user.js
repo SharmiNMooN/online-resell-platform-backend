@@ -6,6 +6,7 @@ const userSchema = new Schema(
     name: { type: Schema.Types.String, trim: true, required: true },
     email: { type: Schema.Types.String, trim: true, required: true },
     image: { type: Schema.Types.String, trim: true },
+    isVerified: { type: Schema.Types.Boolean, default: false },
     role: {
       type: Schema.Types.String,
       enum: ["admin", "seller", "buyer"],
