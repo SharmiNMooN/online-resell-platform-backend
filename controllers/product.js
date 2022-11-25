@@ -91,7 +91,7 @@ module.exports = {
           $project: {
             _id: "$_id",
             sellerId: 1,
-            categoryId:1,
+            categoryId: 1,
             sellerName: "$seller.name",
             sellerEmail: "$seller.email",
             sellerImage: "$seller.image",
@@ -107,6 +107,7 @@ module.exports = {
             location: 1,
             status: 1,
             isAdvertised: 1,
+            createdAt: 1,
           },
         },
       ]);
