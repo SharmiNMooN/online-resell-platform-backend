@@ -1,6 +1,6 @@
 const productModel = require("../models/product");
 const categoryModel = require("../models/category");
-
+const ObjectId = require("mongoose").Types.ObjectId;
 module.exports = {
   createProduct: async (req, res) => {
     try {
@@ -73,10 +73,43 @@ module.exports = {
   getProducts: async (req, res) => {
     try {
       const { categoryId } = req.params;
-      const products = await productModel.find({
-        categoryId,
-        status: "available",
-      });
+      const products = await productModel.aggregate([
+        {
+          $match: { categoryId: ObjectId(categoryId), status: "available" },
+        },
+
+        {
+          $lookup: {
+            from: "users",
+            localField: "sellerId",
+            foreignField: "_id",
+            as: "seller",
+          },
+        },
+        { $unwind: "$seller" },
+        {
+          $project: {
+            _id: "$_id",
+            sellerId: 1,
+            categoryId:1,
+            sellerName: "$seller.name",
+            sellerEmail: "$seller.email",
+            sellerImage: "$seller.image",
+            isVerifiedSeller: "$seller.isVerified",
+            name: 1,
+            description: 1,
+            sellingPrice: 1,
+            purchasePrice: 1,
+            yearOfPurchase: 1,
+            condition: 1,
+            image: 1,
+            mobileNumber: 1,
+            location: 1,
+            status: 1,
+            isAdvertised: 1,
+          },
+        },
+      ]);
       return res.send({
         success: true,
         message: "Products list...",
