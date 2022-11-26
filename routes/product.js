@@ -3,6 +3,7 @@ const router = express.Router();
 const productController = require("../controllers/product");
 const { verifyJWT } = require("../jwt");
 const { authorisedRoles } = require("../authorisation");
+
 router.post(
   "/",
   verifyJWT,
@@ -10,6 +11,12 @@ router.post(
   productController.createProduct
 );
 router.get("/adverties", productController.getAdvertiesProduct);
+router.get(
+  "/my-product",
+  verifyJWT,
+  authorisedRoles("seller"),
+  productController.getMyProduct
+);
 router.get("/:categoryId", verifyJWT, productController.getProducts);
 router.patch("/:productId", verifyJWT, productController.updateProduct);
 

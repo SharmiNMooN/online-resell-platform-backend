@@ -141,4 +141,94 @@ module.exports = {
       });
     }
   },
+
+  getMyProduct: async (req, res) => {
+    try {
+      const products = await productModel.find({
+        sellerId: req.decoded.id,
+        status: "available",
+      });
+      return res.send({
+        success: true,
+        message: "Seller product list...",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  getMyProduct: async (req, res) => {
+    try {
+      const products = await productModel.find({
+        sellerId: req.decoded.id,
+        status: "available",
+      });
+      return res.send({
+        success: true,
+        message: "Seller product list...",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+  getMyProduct: async (req, res) => {
+    try {
+      const products = await productModel.aggregate([
+        {
+          $match: { sellerId: ObjectId(req.decoded.id) },
+        },
+
+        {
+          $lookup: {
+            from: "users",
+            localField: "sellerId",
+            foreignField: "_id",
+            as: "seller",
+          },
+        },
+        { $unwind: "$seller" },
+        {
+          $project: {
+            _id: "$_id",
+            sellerId: 1,
+            categoryId: 1,
+            sellerName: "$seller.name",
+            sellerEmail: "$seller.email",
+            sellerImage: "$seller.image",
+            isVerifiedSeller: "$seller.isVerified",
+            name: 1,
+            description: 1,
+            sellingPrice: 1,
+            purchasePrice: 1,
+            yearOfPurchase: 1,
+            condition: 1,
+            image: 1,
+            mobileNumber: 1,
+            location: 1,
+            status: 1,
+            isAdvertised: 1,
+            createdAt: 1,
+          },
+        },
+      ]);
+      return res.send({
+        success: true,
+        message: "Seller product list...",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };
