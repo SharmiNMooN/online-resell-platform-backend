@@ -6,7 +6,7 @@ const { authorisedRoles } = require("../authorisation");
 
 router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
-router.post(
+router.get(
   "/buyers",
   verifyJWT,
   authorisedRoles("admin"),
@@ -20,7 +20,7 @@ router.get(
   userController.getMyBuyers
 );
 
-router.post(
+router.get(
   "/sellers",
   verifyJWT,
   authorisedRoles("admin"),
