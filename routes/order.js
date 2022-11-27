@@ -19,4 +19,12 @@ router.get(
 
 router.get("/:orderId", orderController.getOrder);
 
+router.post(
+  "/create-payment-intent",
+  verifyJWT,
+  orderController.createPaymentIntent
+);
+
+router.post("/payments", verifyJWT, orderController.payment);
+
 module.exports = router;

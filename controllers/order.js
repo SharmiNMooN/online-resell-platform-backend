@@ -1,6 +1,9 @@
 const productModel = require("../models/product");
 const orderModel = require("../models/order");
+const paymentModel = require("../models/payment");
+require("dotenv").config();
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 module.exports = {
   createOrder: async (req, res) => {
     try {
@@ -79,5 +82,39 @@ module.exports = {
         message: error.message,
       });
     }
+  },
+
+  createPaymentIntent: async (req, res) => {
+    const order = req.body;
+    const price = order.price;
+    const amount = price * 100;
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      currency: "usd",
+      amount: amount,
+      payment_method_types: ["card"],
+    });
+    return res.send({
+      success: true,
+      data: { clientSecret: paymentIntent.client_secret },
+    });
+  },
+
+  payment: async (req, res) => {
+    const payment = req.body;
+    const result = await paymentModel.create(payment);
+
+    await orderModel.findOneAndUpdate(
+      { _id: payment.orderId },
+      {
+        paymentStatus: "paid",
+        transactionId: payment.transactionId,
+      },
+      { new: true }
+    );
+    return res.send({
+      success: true,
+      data: result,
+    });
   },
 };
