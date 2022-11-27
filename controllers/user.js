@@ -214,4 +214,37 @@ module.exports = {
       });
     }
   },
+
+  updateUser: async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log({ userId });
+      const user = await userModel.findOne({
+        _id: userId,
+      });
+      if (!user) {
+        return res.status(400).send({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+      const deletedUser = await userModel.findOneAndUpdate(
+        { _id: userId },
+        req.body,
+        { new: true }
+      );
+
+      return res.status(200).send({
+        success: true,
+        message: "User updated successfully",
+        data: deletedUser,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };

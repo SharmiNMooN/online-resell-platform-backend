@@ -34,4 +34,11 @@ router.delete(
   userController.deleteUser
 );
 
+router.patch(
+  "/:userId",
+  verifyJWT,
+  authorisedRoles("admin"),
+  userController.updateUser
+);
+
 module.exports = router;
