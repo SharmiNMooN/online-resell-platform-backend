@@ -26,6 +26,7 @@ const productSchema = new Schema(
       default: "available",
     },
     isAdvertised: { type: Schema.Types.Boolean, default: false },
+    isReportedToAdmin: { type: Schema.Types.Boolean, default: false },
   },
   {
     timestamps: true,
