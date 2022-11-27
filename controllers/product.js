@@ -231,4 +231,36 @@ module.exports = {
       });
     }
   },
+
+  deleteProduct: async (req, res) => {
+    try {
+      const { productId } = req.body;
+      console.log({ productId });
+      const product = await productModel.findOne({
+        _id: productId,
+      });
+      if (!product) {
+        return res.status(400).send({
+          success: false,
+          message: "Product not found",
+        });
+      }
+
+      const deletedProduct = await productModel.findOneAndRemove({
+        _id: productId,
+      });
+      console.log({ deletedProduct });
+
+      return res.status(200).send({
+        success: true,
+        message: "Product deleted successfully",
+        data: deletedProduct,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };

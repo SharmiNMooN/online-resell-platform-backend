@@ -10,6 +10,13 @@ router.post(
   authorisedRoles("seller"),
   productController.createProduct
 );
+router.delete(
+  "/",
+  verifyJWT,
+  authorisedRoles("seller", "admin"),
+  productController.deleteProduct
+);
+
 router.get("/adverties", productController.getAdvertiesProduct);
 router.get(
   "/my-product",
