@@ -17,6 +17,6 @@ router.get(
   orderController.getMyOrders
 );
 
-router.get("/:orderId", verifyJWT, orderController.getOrder);
+router.get("/:orderId", orderController.getOrder);
 
 module.exports = router;
