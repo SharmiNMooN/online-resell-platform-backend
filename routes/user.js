@@ -27,4 +27,11 @@ router.get(
   userController.getBuyers
 );
 
+router.delete(
+  "/delete-user",
+  verifyJWT,
+  authorisedRoles("admin"),
+  userController.deleteUser
+);
+
 module.exports = router;
