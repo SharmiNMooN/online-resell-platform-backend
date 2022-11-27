@@ -24,7 +24,7 @@ router.get(
   "/sellers",
   verifyJWT,
   authorisedRoles("admin"),
-  userController.getBuyers
+  userController.getSellers
 );
 
 router.delete(

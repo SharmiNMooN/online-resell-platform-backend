@@ -166,7 +166,7 @@ module.exports = {
     }
   },
 
-  getSeller: async (req, res) => {
+  getSellers: async (req, res) => {
     try {
       const users = await userModel.find({
         role: "seller",
