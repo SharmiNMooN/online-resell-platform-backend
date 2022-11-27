@@ -61,4 +61,23 @@ module.exports = {
       });
     }
   },
+
+  getOrder: async (req, res) => {
+    try {
+      const orders = await orderModel.findOne({
+        _id: req.params.orderId,
+      });
+
+      return res.send({
+        success: true,
+        message: "Order details",
+        data: orders,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };
