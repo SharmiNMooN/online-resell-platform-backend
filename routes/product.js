@@ -18,6 +18,7 @@ router.delete(
 );
 
 router.get("/adverties", productController.getAdvertiesProduct);
+router.get("/reported", productController.getReportedProduct);
 router.get(
   "/my-product",
   verifyJWT,

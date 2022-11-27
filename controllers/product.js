@@ -142,6 +142,24 @@ module.exports = {
     }
   },
 
+  getReportedProduct: async (req, res) => {
+    try {
+      const products = await productModel.find({
+        isReportedToAdmin: true,
+      });
+      return res.send({
+        success: true,
+        message: "Reported product list...",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
   getMyProduct: async (req, res) => {
     try {
       const products = await productModel.find({
